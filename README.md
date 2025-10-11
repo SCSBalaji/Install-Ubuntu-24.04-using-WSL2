@@ -205,6 +205,28 @@ sudo /etc/init.d/xrdp start
 
 This step ensures that when you log in via Remote Desktop, the XFCE desktop environment will be launched, giving you access to the graphical interface of Ubuntu 24.04.
 
+❗If you run into an issue where the RDP session disconnects right away after attempting to connect, you can try the following tweaks to ```startwm.sh```:
+
+The following tweak from the link below wasn't 100% related but the same tweak to ```/etc/xrdp/startwm.sh``` solved the issue for me and now I can RDP successfully to my WSL Ubuntu 24.04 instance:
+
+Link to post: command line - Can not open terminal in XFCE GUI under Windows 11 WSL Ubuntu 24.04 - Ask Ubuntu]    
+https://askubuntu.com/questions/1537834/can-not-open-terminal-in-xfce-gui-under-windows-11-wsl-ubuntu-24-04
+
+The actual tweak:   
+
+Edit the startwm.sh file   
+sudo nano /etc/xrdp/startwm.sh    
+```
+# test -x /etc/X11/Xsession && exec /etc/X11/Xsession
+# exec /bin/sh /etc/X11/Xsession
+unset DBUS_SESSION_BUS_ADDRESS
+unset XDG_RUNTIME_DIR
+startxfce4
+```
+Restart xrdp and then RDP should hopefully work as expected.   
+
+Try an RDP connection again and hopefully it now works.   
+
 ### 9️⃣ Step 9: Launch the Ubuntu GUI via Remote Desktop
 
 1. Open Remote Desktop Connection on your Windows machine (search for "Remote Desktop" in the Start menu).
